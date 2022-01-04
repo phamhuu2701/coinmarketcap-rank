@@ -2,10 +2,6 @@ import logo from './logo.svg'
 import './App.css'
 import { useEffect } from 'react'
 
-function numberWithCommas(x) {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-}
-
 const getData = () => {
   fetch(
     'https://api.coinmarketcap.com/data-api/v3/cryptocurrency/listing?start=1&limit=100&sortBy=market_cap&sortType=desc',
@@ -13,9 +9,6 @@ const getData = () => {
     .then((response) => response.json())
     .then((res) => {
       let data = res.data.cryptoCurrencyList
-
-      console.log('Coinmarketcap top 100:')
-      console.log('data :>> ', data)
 
       data = data.map((item) => {
         let price = item.quotes.find((_item) => _item.name === 'USD')?.price || 0
@@ -33,9 +26,6 @@ const getData = () => {
 
       data.sort((a, b) => (a.cmcRank < b.cmcRank ? -1 : a.cmcRank > b.cmcRank ? 1 : 0))
 
-      console.log('Coinmarketcap top 100 handled:')
-      console.log('data :>> ', data)
-
       let str = ''
       for (let i = 0; i < data.length; i++) {
         let selected = data[i]
@@ -51,17 +41,7 @@ const getData = () => {
           selected.price +
           '\n'
       }
-      console.log('Coinmarketcap top 100 string:')
       console.log(str)
-
-      let prices = ''
-      for (let i = 0; i < data.length; i++) {
-        let selected = data[i]
-        prices += selected.price + '\n'
-      }
-      console.log('Coinmarketcap top 100 prices:')
-      console.log('Timestamp:', new Date())
-      console.log(prices)
     })
 }
 
